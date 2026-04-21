@@ -140,10 +140,6 @@ body {
   line-height: 1.7;
 }
 
-#section_2 p b {
-  color: var(--pink);
-}
-
 #downloadLink {
   cursor: pointer;
   color: var(--gold);
