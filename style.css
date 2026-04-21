@@ -139,6 +139,9 @@ body {
   font-size: clamp(13px, 1.6vw, 17px);
   line-height: 1.7;
 }
+#section_2 a{
+  text-decoration: none;
+}
 
 #downloadLink {
   cursor: pointer;
