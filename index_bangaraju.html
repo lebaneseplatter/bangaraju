@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Happy Birthday Bangaraju!</title>
+  <link rel="stylesheet" href="style_bangaraju.css" />
+</head>
+
+<body>
+
+  <div id="section_1">
+    <div class="image-container" id="imageContainer">
+      <img src="assets/image-3.png" alt="Happy Birthday Bangaraju" id="bdayImage" loading="eager" />
+      <div class="click-hint">tap for surprise!</div>
+    </div>
+
+    <div class="text-box">
+      <h1>Happy Birthday <span>Bangaraju!</span></h1>
+      <p>
+        happy birthday baccha, aaj hi ke din aap aye the na mjhe hashane k liye🥰🥰🤗🤗🤭🤭
+      </p>
+    </div>
+  </div>
+
+  <div id="section_2">
+    <p>
+      <b>so here's a little surprise — turn ur volume up and click on ur photo.
+        <b>keep clicking if u want more confetti.</b></b>
+      (u can also download the poster by clicking
+      <a href="assets/image-3.png" download><b>here</b></a> — and u should, cuz ur chhota mota designer bhai
+      spent way too long on it)
+    </p>
+  </div>
+
+  <script>
+    const imageContainer = document.getElementById("imageContainer");
+    const section1 = document.getElementById("section_1");
+
+    const colors = [
+      "#f7c008", "#ff2d9b", "#ffffff",
+      "#ffd700", "#ff69b4", "#fffacd",
+      "#4169e1", "#c8a2c8",
+    ];
+
+    let birthdayAudio = null;
+    let isPlaying = false;
+    let confettiInterval = null;
+
+    function createConfetti() {
+      const confettiCount = 100;
+      const containerRect = section1.getBoundingClientRect();
+      const fragment = document.createDocumentFragment();
+
+      for (let i = 0; i < confettiCount; i++) {
+        const el = document.createElement("div");
+        el.className = "confetti";
+        const size = (Math.random() * 8 + 6) + "px";
+        el.style.cssText = `
+        left:${Math.random() * containerRect.width}px;
+        background-color:${colors[Math.floor(Math.random() * colors.length)]};
+        animation-delay:${Math.random() * 0.5}s;
+        animation-duration:${Math.random() * 2 + 2.5}s;
+        width:${size};height:${size};
+        border-radius:${Math.random() > 0.5 ? "50%" : "3px"};
+      `;
+        fragment.appendChild(el);
+        setTimeout(() => el.classList.add("active"), 10);
+        setTimeout(() => el.remove(), 5500);
+      }
+
+      section1.appendChild(fragment);
+    }
+
+    function startConfettiShower() {
+      if (confettiInterval) return; // already running
+      createConfetti(); // fire immediately
+      confettiInterval = setInterval(createConfetti, 1800); // then every 1.8s
+    }
+
+    function stopConfettiShower() {
+      clearInterval(confettiInterval);
+      confettiInterval = null;
+    }
+
+    function playBirthdaySong() {
+      if (!birthdayAudio) {
+        birthdayAudio = new Audio("assets/bday-song.mp3");
+        birthdayAudio.addEventListener("ended", () => {
+          isPlaying = false;
+          stopConfettiShower();
+        });
+      }
+      if (!isPlaying) {
+        isPlaying = true;
+        birthdayAudio.currentTime = 0;
+        birthdayAudio.play().catch((e) => {
+          console.error("Audio failed:", e);
+          isPlaying = false;
+          stopConfettiShower();
+        });
+        startConfettiShower();
+      }
+    }
+
+    imageContainer.addEventListener("click", playBirthdaySong);
+  </script>
+</body>
+
+</html>
